@@ -20,6 +20,6 @@ void insertTreeNode(Node** head, int iValor);
 
 void showTree(Node* head);
 
-Node searchNode(Node* head, int Ivalor);
+Node* removeNode(Node* head, int ivalor);
 
 }
