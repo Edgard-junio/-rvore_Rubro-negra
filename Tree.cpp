@@ -19,40 +19,34 @@ Tree::Node* Tree::newNode(int iValor)
 
 }
 
-Tree::Node* Tree::insertTreeNode(Node* head, int iValor) 
-{
+Tree::Node* Tree::insertTreeNode(Node* head, int iValor) {
     Node* ptrTemp = newNode(iValor);
 
-    if(head == nullptr)
-    {
+    if (head == nullptr) {
         changeColor(ptrTemp);
         return ptrTemp;
     }
 
-    if(iValor < head -> iData) 
-    {
-        if(head->ptrLeft == nullptr) 
-        {
+    if (iValor < head->iData) {
+        if (head->ptrLeft == nullptr) {
             head->ptrLeft = ptrTemp;
-            ptrTemp -> ptrParent = head;
-        } 
-
-        else
-            insertTreeNode(head -> ptrLeft, iValor);
+            ptrTemp->ptrParent = head;
+        } else {
+            head->ptrLeft = insertTreeNode(head->ptrLeft, iValor);
+        }
+    } else {
+        if (head->ptrRight == nullptr) {
+            head->ptrRight = ptrTemp;
+            ptrTemp->ptrParent = head;
+        } else {
+            head->ptrRight = insertTreeNode(head->ptrRight, iValor);
+        }
     }
 
-    else
-    {
-            if(head -> ptrRight == nullptr)
-            {
-                head -> ptrRight = ptrTemp;
-                ptrTemp -> ptrParent = head;
-            }
-            else
-                insertTreeNode(head -> ptrParent, iValor);
-    }
+    // Call function to regulate color properties of the tree
+    // regulatescolor(head);
 
-    //regulatescolor(head) 
+    return head;
 }
 
 Tree::Node* Tree::leftRotation(Node* root) 
