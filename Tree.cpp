@@ -4,13 +4,13 @@
 using std::cout;
 using std::endl;
 
-Tree::Node* Tree::newNode(int iValor, Color color)
+Tree::Node* Tree::newNode(int iValor)
 {
     Tree::Node* ptrTemp = (Node*)malloc(sizeof(Node)); //Criando um nó com o tmanho de um Node
 
     //Atualizando os parametros
     ptrTemp -> iData = iValor;
-    ptrTemp -> color = color;
+    ptrTemp -> color = Red;
     ptrTemp -> ptrLeft = nullptr;
     ptrTemp -> ptrRight = nullptr;
     ptrTemp -> ptrParent = nullptr;
@@ -19,42 +19,40 @@ Tree::Node* Tree::newNode(int iValor, Color color)
 
 }
 
-void Tree::insertTreeNode(Node** head, int iValor) {
-    Node* ptrTemp = Tree::newNode(iValor, Black); // Inicialmente definimos a cor como Black
+Tree::Node* Tree::insertTreeNode(Node* head, int iValor) 
+{
+    Node* ptrTemp = newNode(iValor);
 
-    if ((*head) == nullptr) {
-        (*head) = ptrTemp;
-        return;
+    if(head == nullptr)
+    {
+        changeColor(ptrTemp);
+        return ptrTemp;
     }
 
-    Node* current = (*head);
-    Node* ptrParent = nullptr;
-    int count = 1; // Contador para determinar o nível da árvore
+    if(iValor < head -> iData) 
+    {
+        if(head->ptrLeft == nullptr) 
+        {
+            head->ptrLeft = ptrTemp;
+            ptrTemp -> ptrParent = head;
+        } 
 
-    while (current != nullptr) {
-        ptrParent = current;
-
-        if (iValor <= current->iData) {
-            current = current->ptrLeft;
-        } else {
-            current = current->ptrRight;
-        }
-        count++;
+        else
+            insertTreeNode(head -> ptrLeft, iValor);
     }
 
-    ptrTemp->ptrParent = ptrParent; // Define o pai do novo nó
-
-    // Determina a cor do novo nó com base no nível (count)
-    if (count % 2 == 0) {
-        ptrTemp->color = Red; // Nível par, cor Red
+    else
+    {
+            if(head -> ptrRight == nullptr)
+            {
+                head -> ptrRight = ptrTemp;
+                ptrTemp -> ptrParent = head;
+            }
+            else
+                insertTreeNode(head -> ptrParent, iValor);
     }
 
-    // Insere o novo nó na posição correta
-    if (iValor <= ptrParent->iData) {
-        ptrParent->ptrLeft = ptrTemp;
-    } else {
-        ptrParent->ptrRight = ptrTemp;
-    }
+    //regulatescolor(head)
 }
 
 Tree::Node* Tree::leftRotation(Node* root) 

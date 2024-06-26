@@ -14,9 +14,9 @@ struct Node
     Node* ptrParent;
 };
 
-Node* newNode(int iValor, Color color);
+Node* newNode(int iValor);
 
-void insertTreeNode(Node** head, int iValor);
+Node* insertTreeNode(Node* head, int iValor);
 
 Node* leftRotation(Node* root);
 
