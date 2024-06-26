@@ -19,56 +19,87 @@ Tree::Node* Tree::newNode(int iValor, Color color)
 
 }
 
-void Tree::insertTreeNode(Node** head, int iValor)
-{
-    Tree::Node* ptrTemp = Tree::newNode(iValor, Black); //Como não sabemos sua posição iniciamos com a cor Black
+void Tree::insertTreeNode(Node** head, int iValor) {
+    Node* ptrTemp = Tree::newNode(iValor, Black); // Inicialmente definimos a cor como Black
 
-    if((*head) == nullptr)
-    {
+    if ((*head) == nullptr) {
         (*head) = ptrTemp;
         return;
     }
 
     Node* current = (*head);
     Node* ptrParent = nullptr;
-    int count = 1;//Criamos um contador para saber em que nével da Arvore estamos e poder definir a cor do nó
+    int count = 1; // Contador para determinar o nível da árvore
 
-    while (current != nullptr)
-    {
-        count = count + 1;
+    while (current != nullptr) {
         ptrParent = current;
 
-        if(current -> iData <= iValor)
-        {
-            current = current -> ptrLeft;
+        if (iValor <= current->iData) {
+            current = current->ptrLeft;
+        } else {
+            current = current->ptrRight;
         }
-        else if(current -> iData > iValor)
-        {
-            current = current -> ptrRight;
-        }
-        else
-        {
-            return; // Tratando uma possível exeção
-        }
-
+        count++;
     }
 
-    ptrTemp -> ptrParent = ptrParent; //definindo o nó pai
+    ptrTemp->ptrParent = ptrParent; // Define o pai do novo nó
 
-    if(count % 2 == 0)
+    // Determina a cor do novo nó com base no nível (count)
+    if (count % 2 == 0) {
+        ptrTemp->color = Red; // Nível par, cor Red
+    }
+
+    // Insere o novo nó na posição correta
+    if (iValor <= ptrParent->iData) {
+        ptrParent->ptrLeft = ptrTemp;
+    } else {
+        ptrParent->ptrRight = ptrTemp;
+    }
+}
+
+Tree::Node* Tree::leftRotation(Node* root) 
+{
+    if (root == nullptr || root->ptrRight == nullptr) 
     {
-        ptrTemp -> color = Red; //como estamos em um nível par vamos definir a cor como Red
+        return root;
     }
 
-    if(ptrParent -> iData <= iValor)
+    Node* ptrTemp = root->ptrRight;
+    root->ptrRight = ptrTemp->ptrLeft;
+
+    if (ptrTemp->ptrLeft != nullptr) 
     {
-        ptrParent -> ptrLeft = ptrTemp;
+        //coso ptrTemp possua filho a esquerda o parametro prtParent é modificado par ser a antiga raiz
+        ptrTemp->ptrLeft->ptrParent = root;
     }
 
-    else
+    ptrTemp->ptrParent = nullptr;
+
+    ptrTemp->ptrLeft = root;
+    root->ptrParent = ptrTemp;
+
+    return ptrTemp;
+}
+
+Tree::Node* Tree::RightRotation(Node* root) 
+{
+    if(root == nullptr || root -> ptrLeft == nullptr) return root;
+
+    Node* ptrTemp = root -> ptrLeft;
+
+    root -> ptrLeft = ptrTemp -> ptrRight;
+    
+    if(ptrTemp -> ptrRight != nullptr) 
     {
-        ptrParent -> ptrRight = ptrTemp;
+        //Caso  ptrTemp tenha filho a direita atualizamos o parametro ptrParent para a antiga raiz
+        ptrTemp -> ptrRight -> ptrParent = root;
     }
+
+    ptrTemp -> ptrParent = nullptr;
+    ptrTemp -> ptrRight = root;
+    root -> ptrParent = ptrTemp;
+
+    return ptrTemp;
 }
 
 void Tree::showTree(Node* head)
@@ -83,6 +114,7 @@ void Tree::showTree(Node* head)
     Tree::showTree(head -> ptrLeft);
     Tree::showTree(head -> ptrRight);
 }
+
 Tree::Node* Tree::removeNode(Node* head, int ivalor)
 {
     if(head == nullptr) return head;
@@ -138,4 +170,15 @@ Tree::Node* Tree::removeNode(Node* head, int ivalor)
     }
 
     return head;
+}
+
+void Tree::changeColor(Node* root)
+{
+    if(root == nullptr) return;
+
+    if(root -> color == Red) root -> color = Black;
+
+    else if(root -> color == Black) root -> color = Red;
+
+    else exit(1);
 }
