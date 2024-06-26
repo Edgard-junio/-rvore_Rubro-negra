@@ -112,7 +112,7 @@ void Tree::showTree(Node* head)
         return;
     }
     
-    cout << "Valor do nó = " << head -> iData << " Sua cor é " << (head -> color == Red ? "Red" : "Black") << endl;
+    cout << "Valor do nó = " << head -> iData << " Sua cor é " << (head -> color == Red ? "\033[1;31mRed\033[0m" : "\033[1;30mBlack\033[0m") << endl;
     
     Tree::showTree(head -> ptrLeft);
     Tree::showTree(head -> ptrRight);
