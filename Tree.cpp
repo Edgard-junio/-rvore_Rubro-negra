@@ -52,7 +52,7 @@ Tree::Node* Tree::insertTreeNode(Node* head, int iValor)
                 insertTreeNode(head -> ptrParent, iValor);
     }
 
-    //regulatescolor(head)
+    //regulatescolor(head) 
 }
 
 Tree::Node* Tree::leftRotation(Node* root) 

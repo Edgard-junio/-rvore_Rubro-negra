@@ -14,7 +14,7 @@ struct Node
     Node* ptrParent;
 };
 
-Node* newNode(int iValor);
+Node* newNode(int iValor); 
 
 Node* insertTreeNode(Node* head, int iValor);
 
