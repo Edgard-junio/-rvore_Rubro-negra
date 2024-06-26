@@ -55,7 +55,7 @@ Tree::Node* Tree::leftRotation(Node* root)
     {
         return root;
     }
-
+ 
     Node* ptrTemp = root->ptrRight;
     root->ptrRight = ptrTemp->ptrLeft;
 
