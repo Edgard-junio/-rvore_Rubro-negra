@@ -26,6 +26,6 @@ void showTree(Node* head);
 
 Node* removeNode(Node* head, int ivalor);
 
-void changeColor(Node* root);
+void changeColor(Node* root); 
 
 }

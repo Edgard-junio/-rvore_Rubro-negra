@@ -14,8 +14,8 @@ int main()
 
     Tree::showTree(root);
 
-    Tree::changeColor(root);
-    cout<<"-------------------------------------------------------"<<endl;
+    cout<<"Depois da rotação"<<endl;
+    Tree::Node* ptr = Tree::leftRotation(root);
 
-    Tree::showTree(root);
+    Tree::showTree(ptr);
 }

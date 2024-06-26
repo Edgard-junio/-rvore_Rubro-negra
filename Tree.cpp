@@ -74,9 +74,11 @@ Tree::Node* Tree::leftRotation(Node* root)
     }
 
     ptrTemp->ptrParent = nullptr;
-
     ptrTemp->ptrLeft = root;
     root->ptrParent = ptrTemp;
+
+    changeColor(ptrTemp);
+    changeColor(ptrTemp->ptrLeft);
 
     return ptrTemp;
 }
@@ -98,6 +100,9 @@ Tree::Node* Tree::RightRotation(Node* root)
     ptrTemp -> ptrParent = nullptr;
     ptrTemp -> ptrRight = root;
     root -> ptrParent = ptrTemp;
+
+    changeColor(ptrTemp);
+    changeColor(ptrTemp->ptrRight);
 
     return ptrTemp;
 }
@@ -178,7 +183,6 @@ void Tree::changeColor(Node* root)
 
     if(root -> color == Red) root -> color = Black;
 
-    else if(root -> color == Black) root -> color = Red;
+    else root -> color = Red;
 
-    else exit(1);
 }
