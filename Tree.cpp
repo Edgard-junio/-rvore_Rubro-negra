@@ -58,7 +58,7 @@ Tree::Node* Tree::leftRotation(Node* root)
  
     Node* ptrTemp = root->ptrRight;
     root->ptrRight = ptrTemp->ptrLeft;
-
+ 
     if (ptrTemp->ptrLeft != nullptr) 
     {
         //coso ptrTemp possua filho a esquerda o parametro prtParent é modificado par ser a antiga raiz
