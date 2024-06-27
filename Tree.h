@@ -28,4 +28,5 @@ Node* removeNode(Node* head, int ivalor);
 
 void changeColor(Node* root); 
 
+Node* regulatescolor(Node* root);
 }

@@ -19,32 +19,46 @@ Tree::Node* Tree::newNode(int iValor)
 
 }
 
-Tree::Node* Tree::insertTreeNode(Node* head, int iValor) {
+Tree::Node* Tree::insertTreeNode(Node* head, int iValor) 
+{
     Node* ptrTemp = newNode(iValor);
 
-    if (head == nullptr) {
+    if (head == nullptr) 
+    {
         changeColor(ptrTemp); // Faz o nó inicial ser preto
         return ptrTemp;
     }
 
-    if (iValor < head->iData) {
-        if (head->ptrLeft == nullptr) {
+    if (iValor < head->iData) 
+    {
+        if (head->ptrLeft == nullptr) 
+        {
             head->ptrLeft = ptrTemp;
             ptrTemp->ptrParent = head;
-        } else {
+        } 
+        
+        else 
+        {
             head->ptrLeft = insertTreeNode(head->ptrLeft, iValor);
         }
-    } else {
-        if (head->ptrRight == nullptr) {
+    }
+
+    else 
+    {
+        if (head->ptrRight == nullptr) 
+        {
             head->ptrRight = ptrTemp;
             ptrTemp->ptrParent = head;
-        } else {
+        }
+         
+        else 
+        {
             head->ptrRight = insertTreeNode(head->ptrRight, iValor);
         }
     }
 
     // Call function to regulate color properties of the tree
-    // regulatescolor(head);
+    regulatescolor(head);
 
     return head;
 }
@@ -63,6 +77,23 @@ Tree::Node* Tree::leftRotation(Node* root)
     {
         // Caso ptrTemp possua filho a esquerda o parâmetro prtParent é modificado par ser a antiga raiz
         ptrTemp->ptrLeft->ptrParent = root;
+    }
+
+    // Ajustar o pai de root
+    if (root->ptrParent == nullptr) 
+    {
+        // root era a raiz da árvore
+        ptrTemp->ptrParent = nullptr;
+    }
+
+    else if (root == root->ptrParent->ptrLeft) 
+    {
+        root->ptrParent->ptrLeft = ptrTemp;
+    } 
+
+    else 
+    {
+        root->ptrParent->ptrRight = ptrTemp;
     }
 
     ptrTemp->ptrParent = nullptr;
@@ -87,6 +118,22 @@ Tree::Node* Tree::RightRotation(Node* root)
     {
         //Caso ptrTemp tenha filho a direita atualizamos o parâmetro ptrParent para a antiga raiz
         ptrTemp -> ptrRight -> ptrParent = root;
+    }
+
+    if (root->ptrParent == nullptr) 
+    {
+        // root era a raiz da árvore
+        ptrTemp->ptrParent = nullptr;
+    }
+
+    else if(root == root->ptrParent->ptrRight) 
+    {
+        root->ptrParent->ptrRight = ptrTemp;
+    }
+    
+     else 
+    {
+        root->ptrParent->ptrLeft = ptrTemp;
     }
 
     ptrTemp -> ptrParent = nullptr;
@@ -176,4 +223,58 @@ void Tree::changeColor(Node* root)
     if(root -> color == Red) root -> color = Black;
 
     else root -> color = Red;
+}
+
+Tree::Node* Tree::regulatescolor(Node* root)
+{
+    if (root == nullptr)
+    {
+        return root;
+    }
+
+    // Corrige a cor da raiz para preto
+    if (root->ptrParent == nullptr)
+    {
+        root->color = Black;
+    }
+
+    // Ajusta a cor dos filhos e aplica rotações conforme necessário
+    if (root->ptrLeft != nullptr)
+    {
+        root->ptrLeft = regulatescolor(root->ptrLeft);
+    }
+
+    if (root->ptrRight != nullptr)
+    {
+        root->ptrRight = regulatescolor(root->ptrRight);
+    }
+
+    // Se o nó atual é vermelho e ambos os filhos são pretos
+    if (root->color == Red && 
+       ((root->ptrLeft != nullptr && root->ptrLeft->color == Red) ||
+        (root->ptrRight != nullptr && root->ptrRight->color == Red)))
+    {
+        // Caso 1: Nó vermelho com filho esquerdo vermelho e direito preto
+        if (root->ptrLeft != nullptr && root->ptrLeft->color == Red &&
+            (root->ptrRight == nullptr || root->ptrRight->color == Black))
+        {
+            root = RightRotation(root);
+        }
+        // Caso 2: Nó vermelho com filho direito vermelho e esquerdo preto
+        else if (root->ptrRight != nullptr && root->ptrRight->color == Red &&
+                 (root->ptrLeft == nullptr || root->ptrLeft->color == Black))
+        {
+            root = leftRotation(root);
+        }
+        // Caso 3: Nó vermelho com ambos os filhos vermelhos
+        else if ((root->ptrLeft != nullptr && root->ptrLeft->color == Red) &&
+                 (root->ptrRight != nullptr && root->ptrRight->color == Red))
+        {
+            changeColor(root);
+            changeColor(root->ptrLeft);
+            changeColor(root->ptrRight);
+        }
+    }
+
+    return root;
 }
