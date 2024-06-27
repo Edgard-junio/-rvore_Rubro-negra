@@ -6,9 +6,9 @@ using std::endl;
 
 Tree::Node* Tree::newNode(int iValor)
 {
-    Tree::Node* ptrTemp = (Node*)malloc(sizeof(Node)); //Criando um nó com o tmanho de um Node
+    Tree::Node* ptrTemp = (Node*)malloc(sizeof(Node)); // Criando um nó com o tamanho de um Node
 
-    //Atualizando os parametros
+    // Atualizando os parâmetros
     ptrTemp -> iData = iValor;
     ptrTemp -> color = Red;
     ptrTemp -> ptrLeft = nullptr;
@@ -23,7 +23,7 @@ Tree::Node* Tree::insertTreeNode(Node* head, int iValor) {
     Node* ptrTemp = newNode(iValor);
 
     if (head == nullptr) {
-        changeColor(ptrTemp);
+        changeColor(ptrTemp); // Faz o nó inicial ser preto
         return ptrTemp;
     }
 
@@ -61,7 +61,7 @@ Tree::Node* Tree::leftRotation(Node* root)
   
     if (ptrTemp->ptrLeft != nullptr) 
     {
-        //coso ptrTemp possua filho a esquerda o parametro prtParent é modificado par ser a antiga raiz
+        // Caso ptrTemp possua filho a esquerda o parâmetro prtParent é modificado par ser a antiga raiz
         ptrTemp->ptrLeft->ptrParent = root;
     }
 
@@ -85,7 +85,7 @@ Tree::Node* Tree::RightRotation(Node* root)
     
     if(ptrTemp -> ptrRight != nullptr) 
     {
-        //Caso  ptrTemp tenha filho a direita atualizamos o parametro ptrParent para a antiga raiz
+        //Caso ptrTemp tenha filho a direita atualizamos o parâmetro ptrParent para a antiga raiz
         ptrTemp -> ptrRight -> ptrParent = root;
     }
 
@@ -124,7 +124,7 @@ Tree::Node* Tree::removeNode(Node* head, int ivalor)
     {
         Node* ptrTemp = nullptr;
 
-        //Caso o nó não tenha filho a esquerda
+        // Caso o nó não tenha filho a esquerda
         if(head -> ptrLeft == nullptr)
         {
             ptrTemp = head -> ptrRight;
@@ -140,7 +140,7 @@ Tree::Node* Tree::removeNode(Node* head, int ivalor)
             return ptrTemp;
         }
 
-        //caso o nó não tenha filho a direita
+        // Caso o nó não tenha filho a direita
         else if(head -> ptrRight == nullptr)
         {
             ptrTemp = head -> ptrLeft;
@@ -156,7 +156,7 @@ Tree::Node* Tree::removeNode(Node* head, int ivalor)
             return ptrTemp;
         }
 
-        //caso tenha os dois filhos
+        // Caso tenha os dois filhos
         Node* current = head->ptrRight;
 
         while (current -> ptrRight != nullptr) current = current -> ptrRight;
@@ -176,5 +176,4 @@ void Tree::changeColor(Node* root)
     if(root -> color == Red) root -> color = Black;
 
     else root -> color = Red;
-
 }
