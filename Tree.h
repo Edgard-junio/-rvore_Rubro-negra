@@ -7,7 +7,7 @@ enum Color { Black, Red };
 
 struct Node 
 {
-    int iData;
+    int data;
     Color color;
     Node* ptrLeft;
     Node* ptrRight;
@@ -18,15 +18,14 @@ Node* newNode(int iValor);
 
 Node* insertTreeNode(Node* head, int iValor);
 
-Node* leftRotation(Node* root);
+Node* fixInsert(Node*, Node*);
 
-Node* RightRotation(Node* root);
+Node* leftRotation(Node*, Node*);
 
-void showTree(Node* head);
+Node* rightRotation(Node* root, Node* ptrTemp);
 
-Node* removeNode(Node* head, int ivalor);
+// void showTree(Node* head);
 
-void changeColor(Node* root); 
+// Node* removeNode(Node* head, int ivalor);
 
-Node* regulatescolor(Node* root);
 }
