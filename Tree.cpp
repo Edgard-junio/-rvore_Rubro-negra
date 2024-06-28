@@ -3,6 +3,7 @@
 
 using std::cout;
 using std::endl;
+using std::string;
 
 
 namespace Tree
@@ -142,5 +143,38 @@ Node* rightRotation(Node* root, Node* y) {
     return root;
 }
 
+void showTree(Node* root)
+{
+    if(root == nullptr) return;
 
+     cout << "Valor do nó = " << root -> data << " Sua cor é " << (root-> color == Red ? "\033[1;31mRed\033[0m" : "\033[1;30mBlack\033[0m") << endl;
+
+    showTree(root -> ptrLeft);
+    showTree(root -> ptrRight);
 }
+
+Node* minNode(Node* root)
+{
+    if(root == nullptr)
+    {
+        return root;
+    }
+
+    Node* current = root;
+    while (current -> ptrLeft != nullptr) current = current -> ptrLeft;
+
+    return current;
+}
+
+Node* maxNode(Node* root)
+{
+    if(root == nullptr)
+    {
+        return root;
+    }
+    Node* current = root;
+    while (current -> ptrRight != nullptr) current = current -> ptrRight;
+
+    return current;
+}
+

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 namespace Tree 
 {
 
@@ -14,18 +14,21 @@ struct Node
     Node* ptrParent;
 };
 
-Node* newNode(int iValor); 
+Node* newNode(int); 
 
-Node* insertTreeNode(Node* head, int iValor);
+Node* insertTreeNode(Node*, int);
 
 Node* fixInsert(Node*, Node*);
 
 Node* leftRotation(Node*, Node*);
 
-Node* rightRotation(Node* root, Node* ptrTemp);
+Node* rightRotation(Node*, Node*);
 
-// void showTree(Node* head);
+void showTree(Node*);
 
-// Node* removeNode(Node* head, int ivalor);
+//Node* removeNode(Node*, int);
 
+Node* minNode(Node*);
+
+Node* maxNode(Node*);
 }
