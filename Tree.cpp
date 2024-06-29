@@ -194,4 +194,109 @@ void inorderTraversal(Node* root)
     inorderTraversal(root->ptrRight);
 }
 
+bool isValidRedBlackTree(Node* root) 
+{
+    // Se a raiz é nula, a árvore é considerada válida
+    if (root == nullptr) 
+    {
+        return true;
+    }
+
+    int isValid = true;
+
+    // Verificar se a raiz é preta
+    if (root->color != Black) 
+    {
+        return false;
+    }
+
+    Node* current = root;
+    Node* rightCurrent = root;
+    int iAmountBlack = 0;  // Contador de nós pretos no caminho da raiz até a folha mais à esquerda
+    int iAmountright = 0;  // Contador de nós pretos no caminho da raiz até a folha mais à direita
+    int pathBlackHeight = -1;  // Variável para armazenar a altura negra de um caminho
+
+    // Loop para verificar se há nós vermelhos consecutivos e contar os nós pretos
+    while (rightCurrent != nullptr) 
+    {
+        if (rightCurrent != nullptr) 
+        {
+            if (rightCurrent->color == Black) 
+            {
+                iAmountright++;
+            }
+            rightCurrent = rightCurrent->ptrRight;
+        }
+
+        // Verificar se há dois nós vermelhos consecutivos à direita
+        if (rightCurrent != nullptr && rightCurrent->ptrRight != nullptr &&
+            rightCurrent->color == Red && rightCurrent->ptrRight->color == Red) 
+        {
+            isValid = false;
+            break;
+        }
+
+        if (current->color == Black) 
+        {
+            iAmountBlack++;
+        }
+
+        // Verificar se há dois nós vermelhos consecutivos à esquerda
+        if (current->ptrLeft != nullptr && current->color == Red && current->ptrLeft->color == Red) 
+        {
+            isValid = false;
+            break;
+        }
+
+        current = current->ptrLeft;
+    }
+
+    // Verificar a altura negra e se todas as folhas (nós nulos) são pretas
+    Node* stack[100];  // Pilha para percorrer a árvore
+    int top = -1;  // Índice do topo da pilha
+    current = root;
+    int blackHeight = 0;  // Contador da altura negra do caminho atual
+    bool done = false;
+
+    // Loop para percorrer a árvore e verificar a altura negra de todos os caminhos
+    while (!done) 
+    {
+        if (current != nullptr) 
+        {
+            stack[++top] = current;
+            current = current->ptrLeft;
+        } 
+        else 
+        {
+            if (top >= 0) 
+            {
+                current = stack[top--];
+                if (current->color == Black) 
+                {
+                    blackHeight++;
+                }
+                // Verificar se a folha (nó nulo) é preta
+                if (current->ptrLeft == nullptr && current->ptrRight == nullptr) 
+                {
+                    if (pathBlackHeight == -1) 
+                    {
+                        pathBlackHeight = blackHeight;
+                    }
+                    else if (pathBlackHeight != blackHeight) 
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+                current = current->ptrRight;
+            } 
+            else 
+            {
+                done = true;
+            }
+        }
+    }
+
+    return isValid;
+}
 }

@@ -33,4 +33,6 @@ Node* minNode(Node*);
 Node* maxNode(Node*);
 
 void inorderTraversal(Node* root);
+
+bool isValidRedBlackTree(Node* root);
 }
