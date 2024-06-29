@@ -177,4 +177,21 @@ Node* maxNode(Node* root)
 
     return current;
 }
+void inorderTraversal(Node* root) 
+{
+    if (root == nullptr) 
+    {
+        return;
+    }
 
+    // Percorrer a subárvore esquerda
+    inorderTraversal(root->ptrLeft);
+
+    // Processar o nó raiz
+    cout << root->data << " ";
+
+    // Percorrer a subárvore direita
+    inorderTraversal(root->ptrRight);
+}
+
+}

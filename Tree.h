@@ -31,4 +31,6 @@ void showTree(Node*);
 Node* minNode(Node*);
 
 Node* maxNode(Node*);
+
+void inorderTraversal(Node* root);
 }
