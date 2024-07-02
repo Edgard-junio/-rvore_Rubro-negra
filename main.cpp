@@ -10,14 +10,15 @@ using std::endl;
 #include <iomanip>
 #include <algorithm>
 
+
 using std::max;
 
-int depth(Tree::Node* root) {
+int depth(Tree::Node<int>* root) {
     if (root == nullptr) return 0;
     return std::max(depth(root->ptrLeft), depth(root->ptrRight)) + 1;
 }
 
-void printGivenLevel(Tree::Node* root, int level, int indentSpace, int spaceBetween) {
+void printGivenLevel(Tree::Node<int>* root, int level, int indentSpace, int spaceBetween) {
     if (root == nullptr) {
         for (int i = 0; i < indentSpace; ++i) cout << " ";
         cout << " ";
@@ -35,7 +36,7 @@ void printGivenLevel(Tree::Node* root, int level, int indentSpace, int spaceBetw
 }
 
 
-void showTree2(Tree::Node* root) {
+void showTree2(Tree::Node<int>* root) {
     int d = depth(root);
     int indentSpace = (1 << (d - 1)); // Initial space based on tree depth
     int spaceBetween = (1 << d) - 1; // Space between nodes at the same level
@@ -47,7 +48,6 @@ void showTree2(Tree::Node* root) {
     }
 }
 
-
 // ###############################
 
 
@@ -56,7 +56,7 @@ void showTree2(Tree::Node* root) {
 
 int main()
 {
-    Tree::Node* root = nullptr;
+    Tree::Node<int>* root = nullptr;
     root = Tree::insertTreeNode(root,90);
     root = Tree::insertTreeNode(root,95);
     root = Tree::insertTreeNode(root,100);
@@ -66,9 +66,7 @@ int main()
     root = Tree::insertTreeNode(root,70);
     root = Tree::insertTreeNode(root,65);
     
-
     showTree2(root);
-
 
     
 

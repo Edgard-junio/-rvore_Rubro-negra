@@ -9,9 +9,10 @@ using std::string;
 namespace Tree
 {
 
-Node* newNode(int iValor)
+template <typename T>
+Node<T>* newNode(T iValor)
 {
-    Node* ptrTemp = (Node*)malloc(sizeof(Node)); // Criando um nó com o tamanho de um Node
+    Node<T>* ptrTemp =  new Node<T>();
 
     // Atualizando os parâmetros
     ptrTemp->data = iValor;
@@ -23,13 +24,14 @@ Node* newNode(int iValor)
     return ptrTemp;
 }
 
-Node* insertTreeNode(Node* root, int data) {
+template <typename T>
+Node<T>* insertTreeNode(Node<T>* root, T data) {
     // Create a new node
-    Node* ptrNewNode = newNode(data);
+    Node<T>* ptrNewNode = newNode(data);
 
     // Perform a standard BST insert
-    Node* ptrTemp = nullptr;
-    Node* ptrCurrent = root;
+    Node<T>* ptrTemp = nullptr;
+    Node<T>* ptrCurrent = root;
 
     while (ptrCurrent != nullptr) {
         ptrTemp = ptrCurrent;
@@ -55,10 +57,11 @@ Node* insertTreeNode(Node* root, int data) {
     return root;
 }
 
-Node* fixInsert(Node* root, Node* ptrNewNode) {
+template <typename T>
+Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
     while (ptrNewNode != root && ptrNewNode->ptrParent->color == Color::Red) {
         if (ptrNewNode->ptrParent == ptrNewNode->ptrParent->ptrParent->ptrLeft) {
-            Node* y = ptrNewNode->ptrParent->ptrParent->ptrRight;
+            Node<T>* y = ptrNewNode->ptrParent->ptrParent->ptrRight;
             if (y != nullptr && y->color == Color::Red) {
                 ptrNewNode->ptrParent->color = Color::Black;
                 y->color = Color::Black;
@@ -74,7 +77,7 @@ Node* fixInsert(Node* root, Node* ptrNewNode) {
                 root = rightRotation(root, ptrNewNode->ptrParent->ptrParent);
             }
         } else {
-            Node* y = ptrNewNode->ptrParent->ptrParent->ptrLeft;
+            Node<T>* y = ptrNewNode->ptrParent->ptrParent->ptrLeft;
             if (y != nullptr && y->color == Color::Red) {
                 ptrNewNode->ptrParent->color = Color::Black;
                 y->color = Color::Black;
@@ -95,8 +98,9 @@ Node* fixInsert(Node* root, Node* ptrNewNode) {
     return root;
 }
 
-Node* leftRotation(Node* root, Node* x) {
-    Node* y = x->ptrRight;
+template <typename T>
+Node<T>* leftRotation(Node<T>* root, Node<T>* x) {
+    Node<T>* y = x->ptrRight;
     x->ptrRight = y->ptrLeft;
 
     if (y->ptrLeft != nullptr) {
@@ -119,8 +123,9 @@ Node* leftRotation(Node* root, Node* x) {
     return root;
 }
 
-Node* rightRotation(Node* root, Node* y) {
-    Node* x = y->ptrLeft;
+template <typename T>
+Node<T>* rightRotation(Node<T>* root, Node<T>* y) {
+    Node<T>* x = y->ptrLeft;
     y->ptrLeft = x->ptrRight;
 
     if (x->ptrRight != nullptr) {
@@ -143,7 +148,8 @@ Node* rightRotation(Node* root, Node* y) {
     return root;
 }
 
-void showTree(Node* root)
+template <typename T>
+void showTree(Node<T>* root)
 {
     if(root == nullptr) return;
 
@@ -153,31 +159,35 @@ void showTree(Node* root)
     showTree(root -> ptrRight);
 }
 
-Node* minNode(Node* root)
+template <typename T>
+Node<T>* minNode(Node<T>* root)
 {
     if(root == nullptr)
     {
         return root;
     }
 
-    Node* current = root;
+    Node<T>* current = root;
     while (current -> ptrLeft != nullptr) current = current -> ptrLeft;
 
     return current;
 }
 
-Node* maxNode(Node* root)
+template <typename T>
+Node<T>* maxNode(Node<T>* root)
 {
     if(root == nullptr)
     {
         return root;
     }
-    Node* current = root;
+    Node<T>* current = root;
     while (current -> ptrRight != nullptr) current = current -> ptrRight;
 
     return current;
 }
-void inorderTraversal(Node* root) 
+
+template <typename T>
+void inorderTraversal(Node<T>* root) 
 {
     if (root == nullptr) 
     {
@@ -194,7 +204,8 @@ void inorderTraversal(Node* root)
     inorderTraversal(root->ptrRight);
 }
 
-bool isValidRedBlackTree(Node* root) 
+template <typename T>
+bool isValidRedBlackTree(Node<T>* root) 
 {
     // Se a raiz é nula, a árvore é considerada válida
     if (root == nullptr) 
@@ -210,8 +221,8 @@ bool isValidRedBlackTree(Node* root)
         return false;
     }
 
-    Node* current = root;
-    Node* rightCurrent = root;
+    Node<T>* current = root;
+    Node<T>* rightCurrent = root;
     int iAmountBlack = 0;  // Contador de nós pretos no caminho da raiz até a folha mais à esquerda
     int iAmountright = 0;  // Contador de nós pretos no caminho da raiz até a folha mais à direita
     int pathBlackHeight = -1;  // Variável para armazenar a altura negra de um caminho
@@ -252,7 +263,7 @@ bool isValidRedBlackTree(Node* root)
     }
 
     // Verificar a altura negra e se todas as folhas (nós nulos) são pretas
-    Node* stack[100];  // Pilha para percorrer a árvore
+    Node<T>* stack[100];  // Pilha para percorrer a árvore
     int top = -1;  // Índice do topo da pilha
     current = root;
     int blackHeight = 0;  // Contador da altura negra do caminho atual
@@ -299,4 +310,46 @@ bool isValidRedBlackTree(Node* root)
 
     return isValid;
 }
+
+// Instâncias explícitas
+template Node<int>* newNode(int);
+template Node<float>* newNode(float);
+template Node<double>* newNode(double);
+
+template Node<int>* insertTreeNode(Node<int>*, int);
+template Node<float>* insertTreeNode(Node<float>*, float);
+template Node<double>* insertTreeNode(Node<double>*, double);
+
+template Node<int>* fixInsert(Node<int>*, Node<int>*);
+template Node<float>* fixInsert(Node<float>*, Node<float>*);
+template Node<double>* fixInsert(Node<double>*, Node<double>*);
+
+template Node<int>* leftRotation(Node<int>*, Node<int>*);
+template Node<float>* leftRotation(Node<float>*, Node<float>*);
+template Node<double>* leftRotation(Node<double>*, Node<double>*);
+
+template Node<int>* rightRotation(Node<int>*, Node<int>*);
+template Node<float>* rightRotation(Node<float>*, Node<float>*);
+template Node<double>* rightRotation(Node<double>*, Node<double>*);
+
+template void showTree(Node<int>*);
+template void showTree(Node<float>*);
+template void showTree(Node<double>*);
+
+template Node<int>* minNode(Node<int>*);
+template Node<float>* minNode(Node<float>*);
+template Node<double>* minNode(Node<double>*);
+
+template Node<int>* maxNode(Node<int>*);
+template Node<float>* maxNode(Node<float>*);
+template Node<double>* maxNode(Node<double>*);
+
+template void inorderTraversal(Node<int>*);
+template void inorderTraversal(Node<float>*);
+template void inorderTraversal(Node<double>*);
+
+template bool isValidRedBlackTree(Node<int>*);
+template bool isValidRedBlackTree(Node<float>*);
+template bool isValidRedBlackTree(Node<double>*);
+
 }

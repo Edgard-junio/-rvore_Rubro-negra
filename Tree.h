@@ -5,34 +5,43 @@ namespace Tree
 
 enum Color { Black, Red };
 
+template <typename T>
 struct Node 
 {
     int data;
     Color color;
-    Node* ptrLeft;
-    Node* ptrRight;
-    Node* ptrParent;
+    Node<T>* ptrLeft;
+    Node<T>* ptrRight;
+    Node<T>* ptrParent;
 };
 
-Node* newNode(int); 
+template <typename T>
+Node<T>* newNode(T); 
 
-Node* insertTreeNode(Node*, int);
+template <typename T>
+Node<T>* insertTreeNode(Node<T>*, T);
 
-Node* fixInsert(Node*, Node*);
+template <typename T>
+Node<T>* fixInsert(Node<T>*, Node<T>*);
 
-Node* leftRotation(Node*, Node*);
+template <typename T>
+Node<T>* leftRotation(Node<T>*, Node<T>*);
 
-Node* rightRotation(Node*, Node*);
+template <typename T>
+Node<T>* rightRotation(Node<T>*, Node<T>*);
 
-void showTree(Node*);
+template <typename T>
+void showTree(Node<T>*);
 
-//Node* removeNode(Node*, int);
+template <typename T>
+Node<T>* minNode(Node<T>*);
 
-Node* minNode(Node*);
+template <typename T>
+Node<T>* maxNode(Node<T>*);
 
-Node* maxNode(Node*);
+template <typename T>
+void inorderTraversal(Node<T>* root);
 
-void inorderTraversal(Node* root);
-
-bool isValidRedBlackTree(Node* root);
+template <typename T>
+bool isValidRedBlackTree(Node<T>* root);
 }
