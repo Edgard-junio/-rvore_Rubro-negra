@@ -185,7 +185,7 @@ Node<T>* minNode(Node<T>* root)
     }
 
     Node<T>* current = root;
-    while (current -> ptrLeft != nullptr) current = current -> ptrLeft;
+    while (current -> ptrLeft != nullptr) current = current -> ptrLeft;//andando para esquerda procurando o minimo
 
     return current;
 }
@@ -197,8 +197,9 @@ Node<T>* maxNode(Node<T>* root)
     {
         return root;
     }
+
     Node<T>* current = root;
-    while (current -> ptrRight != nullptr) current = current -> ptrRight;
+    while (current -> ptrRight != nullptr) current = current -> ptrRight;//andando para direita para encontrar o maximo
 
     return current;
 }
@@ -455,12 +456,17 @@ Node<T>* fixDelete(Node<T>* root, Node<T>* x) {
 }
 
 template <typename T>
-Node<T>* searchNode(Node<T>* root, T data) {
-    while (root != nullptr && root->data != data) {
-        if (data < root->data) {
-            root = root->ptrLeft;
-        } else {
-            root = root->ptrRight;
+Node<T>* searchNode(Node<T>* root, T data) 
+{
+    while (root != nullptr && root->data != data) 
+    {
+        if (data < root->data) 
+        {
+            root = root->ptrLeft;//se data < que root->data andamos para esquerda
+        } 
+        else 
+        {
+            root = root->ptrRight;//caso contrario vamos para direita
         }
     }
     return root;
