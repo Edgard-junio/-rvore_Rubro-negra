@@ -26,32 +26,32 @@ Node<T>* newNode(T iValor)
 
 template <typename T>
 Node<T>* insertTreeNode(Node<T>* root, T data) {
-    // Create a new node
+    // Cria um novo nó
     Node<T>* ptrNewNode = newNode(data);
 
-    // Perform a standard BST insert
+    // Performa a inserção de um novo nó
     Node<T>* ptrTemp = nullptr;
     Node<T>* ptrCurrent = root;
 
     while (ptrCurrent != nullptr) {
         ptrTemp = ptrCurrent;
-        if (ptrNewNode->data < ptrCurrent->data)
-            ptrCurrent = ptrCurrent->ptrLeft;
-        else
-            ptrCurrent = ptrCurrent->ptrRight;
+
+        if (ptrNewNode->data < ptrCurrent->data) ptrCurrent = ptrCurrent->ptrLeft;
+
+        else ptrCurrent = ptrCurrent->ptrRight;
     }
 
     ptrNewNode->ptrParent = ptrTemp;
 
     if (ptrTemp == nullptr) {
-        root = ptrNewNode; // Tree was empty
+        root = ptrNewNode; // Árvore vazia
     } else if (ptrNewNode->data < ptrTemp->data) {
         ptrTemp->ptrLeft = ptrNewNode;
     } else {
         ptrTemp->ptrRight = ptrNewNode;
     }
 
-    // Fix the Red Black Tree properties
+    // Corrige a árvore vermelha e preta
     root = fixInsert(root, ptrNewNode);
 
     return root;
@@ -60,14 +60,22 @@ Node<T>* insertTreeNode(Node<T>* root, T data) {
 template <typename T>
 Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
     while (ptrNewNode != root && ptrNewNode->ptrParent->color == Color::Red) {
+        
+        // Se o pai do nó é o filho esquerdo do avô
         if (ptrNewNode->ptrParent == ptrNewNode->ptrParent->ptrParent->ptrLeft) {
-            Node<T>* y = ptrNewNode->ptrParent->ptrParent->ptrRight;
-            if (y != nullptr && y->color == Color::Red) {
+            Node<T>* uncle = ptrNewNode->ptrParent->ptrParent->ptrRight; // Tio do nó
+
+            // Se o tio do nó é vermelho
+            if (uncle != nullptr && uncle->color == Color::Red) {
                 ptrNewNode->ptrParent->color = Color::Black;
-                y->color = Color::Black;
+                uncle->color = Color::Black;
                 ptrNewNode->ptrParent->ptrParent->color = Color::Red;
                 ptrNewNode = ptrNewNode->ptrParent->ptrParent;
-            } else {
+            }
+            
+            // Se o tio do nó é preto
+            else {
+                // Se o nó é o filho direito do pai
                 if (ptrNewNode == ptrNewNode->ptrParent->ptrRight) {
                     ptrNewNode = ptrNewNode->ptrParent;
                     root = leftRotation(root, ptrNewNode);
@@ -76,14 +84,23 @@ Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
                 ptrNewNode->ptrParent->ptrParent->color = Color::Red;
                 root = rightRotation(root, ptrNewNode->ptrParent->ptrParent);
             }
-        } else {
-            Node<T>* y = ptrNewNode->ptrParent->ptrParent->ptrLeft;
-            if (y != nullptr && y->color == Color::Red) {
+        } 
+
+        // Se o pai do nó é o filho direito do avô
+        else {
+            Node<T>* uncle = ptrNewNode->ptrParent->ptrParent->ptrLeft; // Tio do nó
+
+            // Se o tio do nó é vermelho
+            if (uncle != nullptr && uncle->color == Color::Red) {
                 ptrNewNode->ptrParent->color = Color::Black;
-                y->color = Color::Black;
+                uncle->color = Color::Black;
                 ptrNewNode->ptrParent->ptrParent->color = Color::Red;
                 ptrNewNode = ptrNewNode->ptrParent->ptrParent;
-            } else {
+            } 
+            
+            // Se o tio do nó é preto
+            else {
+                // Se o nó é o filho esquerdo do pai
                 if (ptrNewNode == ptrNewNode->ptrParent->ptrLeft) {
                     ptrNewNode = ptrNewNode->ptrParent;
                     root = rightRotation(root, ptrNewNode);
@@ -99,51 +116,51 @@ Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
 }
 
 template <typename T>
-Node<T>* leftRotation(Node<T>* root, Node<T>* x) {
-    Node<T>* y = x->ptrRight;
-    x->ptrRight = y->ptrLeft;
+Node<T>* leftRotation(Node<T>* root, Node<T>* ptrCurrent) {
+    Node<T>* ptrTemp = ptrCurrent->ptrRight;
+    ptrCurrent->ptrRight = ptrTemp->ptrLeft;
 
-    if (y->ptrLeft != nullptr) {
-        y->ptrLeft->ptrParent = x;
+    if (ptrTemp->ptrLeft != nullptr) {
+        ptrTemp->ptrLeft->ptrParent = ptrCurrent;
     }
 
-    y->ptrParent = x->ptrParent;
+    ptrTemp->ptrParent = ptrCurrent->ptrParent;
 
-    if (x->ptrParent == nullptr) {
-        root = y;
-    } else if (x == x->ptrParent->ptrLeft) {
-        x->ptrParent->ptrLeft = y;
+    if (ptrCurrent->ptrParent == nullptr) {
+        root = ptrTemp;
+    } else if (ptrCurrent == ptrCurrent->ptrParent->ptrLeft) {
+        ptrCurrent->ptrParent->ptrLeft = ptrTemp;
     } else {
-        x->ptrParent->ptrRight = y;
+        ptrCurrent->ptrParent->ptrRight = ptrTemp;
     }
 
-    y->ptrLeft = x;
-    x->ptrParent = y;
+    ptrTemp->ptrLeft = ptrCurrent;
+    ptrCurrent->ptrParent = ptrTemp;
 
     return root;
 }
 
 template <typename T>
-Node<T>* rightRotation(Node<T>* root, Node<T>* y) {
-    Node<T>* x = y->ptrLeft;
-    y->ptrLeft = x->ptrRight;
+Node<T>* rightRotation(Node<T>* root, Node<T>* ptrCurrent) {
+    Node<T>* ptrTemp = ptrCurrent->ptrLeft;
+    ptrCurrent->ptrLeft = ptrTemp->ptrRight;
 
-    if (x->ptrRight != nullptr) {
-        x->ptrRight->ptrParent = y;
+    if (ptrTemp->ptrRight != nullptr) {
+        ptrTemp->ptrRight->ptrParent = ptrCurrent;
     }
 
-    x->ptrParent = y->ptrParent;
+    ptrTemp->ptrParent = ptrCurrent->ptrParent;
 
-    if (y->ptrParent == nullptr) {
-        root = x;
-    } else if (y == y->ptrParent->ptrRight) {
-        y->ptrParent->ptrRight = x;
+    if (ptrCurrent->ptrParent == nullptr) {
+        root = ptrTemp;
+    } else if (ptrCurrent == ptrCurrent->ptrParent->ptrRight) {
+        ptrCurrent->ptrParent->ptrRight = ptrTemp;
     } else {
-        y->ptrParent->ptrLeft = x;
+        ptrCurrent->ptrParent->ptrLeft = ptrTemp;
     }
 
-    x->ptrRight = y;
-    y->ptrParent = x;
+    ptrTemp->ptrRight = ptrCurrent;
+    ptrCurrent->ptrParent = ptrTemp;
 
     return root;
 }
