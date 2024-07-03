@@ -48,29 +48,49 @@ void showTree2(Tree::Node<int>* root) {
     }
 }
 
-// ###############################
-
-
-
-
-
 int main()
 {
+    // Testes das funções de inserção e remoção
+
     Tree::Node<int>* root = nullptr;
-    root = Tree::insertTreeNode(root,90);
-    root = Tree::insertTreeNode(root,95);
-    root = Tree::insertTreeNode(root,100);
-    root = Tree::insertTreeNode(root,105);
-    root = Tree::insertTreeNode(root,80);
-    root = Tree::insertTreeNode(root,85);
-    root = Tree::insertTreeNode(root,70);
-    root = Tree::insertTreeNode(root,65);
-    
+    root = Tree::insertTreeNode(root,5);
+    root = Tree::insertTreeNode(root,3);
+    root = Tree::insertTreeNode(root,7);
+    root = Tree::insertTreeNode(root,2);
+
+    cout << "Árvore após inserção de 5, 3, 7 e 2:" << endl;
+
     showTree2(root);
 
-    
+    cout << endl;
 
+    // Testa função de busca 
 
+    Tree::Node<int>* node = Tree::searchNode(root, 3);
+
+    cout << "Busca por 3: " << (node != nullptr ? "Encontrado" : "Não encontrado") << endl;
+
+    node = Tree::searchNode(root, 4);
+
+    cout << "Busca por 4: " << (node != nullptr ? "Encontrado" : "Não encontrado") << endl;
+
+    // Testa função de mínimo e máximo
+
+    Tree::Node<int>* min = Tree::minNode(root);
+
+    cout << "Mínimo: " << min->data << endl;
+
+    Tree::Node<int>* max = Tree::maxNode(root);
+
+    cout << "Máximo: " << max->data << endl;
+
+    // Testa função de inOrderTraversal
+
+    cout << "InOrderTraversal: ";
+
+    Tree::inorderTraversal(root);
+
+    cout << endl;
 }
 
 

@@ -311,6 +311,144 @@ bool isValidRedBlackTree(Node<T>* root)
     return isValid;
 }
 
+template <typename T>
+Node<T>* removeNode(Node<T>* root, T data) {
+    Node<T>* nodeToDelete = searchNode(root, data);
+    if (nodeToDelete == nullptr) {
+        return root; // Node not found
+    }
+
+    Node<T>* y = nodeToDelete;
+    Node<T>* x;
+    Color originalColor = y->color;
+
+    if (nodeToDelete->ptrLeft == nullptr) {
+        x = nodeToDelete->ptrRight;
+        root = transplant(root, nodeToDelete, nodeToDelete->ptrRight);
+    } else if (nodeToDelete->ptrRight == nullptr) {
+        x = nodeToDelete->ptrLeft;
+        root = transplant(root, nodeToDelete, nodeToDelete->ptrLeft);
+    } else {
+        y = minNode(nodeToDelete->ptrRight);
+        originalColor = y->color;
+        x = y->ptrRight;
+        if (y->ptrParent == nodeToDelete) {
+            if (x != nullptr) {
+                x->ptrParent = y;
+            }
+        } else {
+            root = transplant(root, y, y->ptrRight);
+            y->ptrRight = nodeToDelete->ptrRight;
+            y->ptrRight->ptrParent = y;
+        }
+        root = transplant(root, nodeToDelete, y);
+        y->ptrLeft = nodeToDelete->ptrLeft;
+        y->ptrLeft->ptrParent = y;
+        y->color = nodeToDelete->color;
+    }
+    delete nodeToDelete;
+    if (originalColor == Color::Black) {
+        root = fixDelete(root, x);
+    }
+    return root;
+}
+
+template <typename T>
+Node<T>* transplant(Node<T>* root, Node<T>* u, Node<T>* v) {
+    if (u->ptrParent == nullptr) {
+        root = v;
+    } else if (u == u->ptrParent->ptrLeft) {
+        u->ptrParent->ptrLeft = v;
+    } else {
+        u->ptrParent->ptrRight = v;
+    }
+    if (v != nullptr) {
+        v->ptrParent = u->ptrParent;
+    }
+    return root;
+}
+
+template <typename T>
+Node<T>* fixDelete(Node<T>* root, Node<T>* x) {
+    while (x != root && (x == nullptr || x->color == Color::Black)) {
+        if (x == x->ptrParent->ptrLeft) {
+            Node<T>* w = x->ptrParent->ptrRight;
+            if (w->color == Color::Red) {
+                w->color = Color::Black;
+                x->ptrParent->color = Color::Red;
+                root = leftRotation(root, x->ptrParent);
+                w = x->ptrParent->ptrRight;
+            }
+            if ((w->ptrLeft == nullptr || w->ptrLeft->color == Color::Black) &&
+                (w->ptrRight == nullptr || w->ptrRight->color == Color::Black)) {
+                w->color = Color::Red;
+                x = x->ptrParent;
+            } else {
+                if (w->ptrRight == nullptr || w->ptrRight->color == Color::Black) {
+                    if (w->ptrLeft != nullptr) {
+                        w->ptrLeft->color = Color::Black;
+                    }
+                    w->color = Color::Red;
+                    root = rightRotation(root, w);
+                    w = x->ptrParent->ptrRight;
+                }
+                w->color = x->ptrParent->color;
+                x->ptrParent->color = Color::Black;
+                if (w->ptrRight != nullptr) {
+                    w->ptrRight->color = Color::Black;
+                }
+                root = leftRotation(root, x->ptrParent);
+                x = root;
+            }
+        } else {
+            Node<T>* w = x->ptrParent->ptrLeft;
+            if (w->color == Color::Red) {
+                w->color = Color::Black;
+                x->ptrParent->color = Color::Red;
+                root = rightRotation(root, x->ptrParent);
+                w = x->ptrParent->ptrLeft;
+            }
+            if ((w->ptrLeft == nullptr || w->ptrLeft->color == Color::Black) &&
+                (w->ptrRight == nullptr || w->ptrRight->color == Color::Black)) {
+                w->color = Color::Red;
+                x = x->ptrParent;
+            } else {
+                if (w->ptrLeft == nullptr || w->ptrLeft->color == Color::Black) {
+                    if (w->ptrRight != nullptr) {
+                        w->ptrRight->color = Color::Black;
+                    }
+                    w->color = Color::Red;
+                    root = leftRotation(root, w);
+                    w = x->ptrParent->ptrLeft;
+                }
+                w->color = x->ptrParent->color;
+                x->ptrParent->color = Color::Black;
+                if (w->ptrLeft != nullptr) {
+                    w->ptrLeft->color = Color::Black;
+                }
+                root = rightRotation(root, x->ptrParent);
+                x = root;
+            }
+        }
+    }
+    if (x != nullptr) {
+        x->color = Color::Black;
+    }
+    return root;
+}
+
+template <typename T>
+Node<T>* searchNode(Node<T>* root, T data) {
+    while (root != nullptr && root->data != data) {
+        if (data < root->data) {
+            root = root->ptrLeft;
+        } else {
+            root = root->ptrRight;
+        }
+    }
+    return root;
+}
+
 // Instâncias explícitas
 template Node<int>* newNode(int);
 template Node<float>* newNode(float);
@@ -352,4 +490,21 @@ template bool isValidRedBlackTree(Node<int>*);
 template bool isValidRedBlackTree(Node<float>*);
 template bool isValidRedBlackTree(Node<double>*);
 
-}
+// Instâncias explícitas para a função de remoção
+template Node<int>* removeNode(Node<int>*, int);
+template Node<float>* removeNode(Node<float>*, float);
+template Node<double>* removeNode(Node<double>*, double);
+
+template Node<int>* transplant(Node<int>*, Node<int>*, Node<int>*);
+template Node<float>* transplant(Node<float>*, Node<float>*, Node<float>*);
+template Node<double>* transplant(Node<double>*, Node<double>*, Node<double>*);
+
+template Node<int>* fixDelete(Node<int>*, Node<int>*);
+template Node<float>* fixDelete(Node<float>*, Node<float>*);
+template Node<double>* fixDelete(Node<double>*, Node<double>*);
+
+template Node<int>* searchNode(Node<int>*, int);
+template Node<float>* searchNode(Node<float>*, float);
+template Node<double>* searchNode(Node<double>*, double);
+} 
+
