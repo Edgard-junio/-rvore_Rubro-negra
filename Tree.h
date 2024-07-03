@@ -57,4 +57,7 @@ namespace Tree
 
     template <typename T>
     Node<T>* searchNode(Node<T>*, T);
+
+    template <typename T>
+    int depth(Node<T>*);
 }

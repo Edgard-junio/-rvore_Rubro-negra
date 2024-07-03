@@ -185,7 +185,7 @@ Node<T>* minNode(Node<T>* root)
     }
 
     Node<T>* current = root;
-    while (current -> ptrLeft != nullptr) current = current -> ptrLeft;//andando para esquerda procurando o minimo
+    while (current -> ptrLeft != nullptr) current = current -> ptrLeft;
 
     return current;
 }
@@ -197,9 +197,8 @@ Node<T>* maxNode(Node<T>* root)
     {
         return root;
     }
-
     Node<T>* current = root;
-    while (current -> ptrRight != nullptr) current = current -> ptrRight;//andando para direita para encontrar o maximo
+    while (current -> ptrRight != nullptr) current = current -> ptrRight;
 
     return current;
 }
@@ -456,20 +455,31 @@ Node<T>* fixDelete(Node<T>* root, Node<T>* x) {
 }
 
 template <typename T>
-Node<T>* searchNode(Node<T>* root, T data) 
-{
-    while (root != nullptr && root->data != data) 
-    {
-        if (data < root->data) 
-        {
-            root = root->ptrLeft;//se data < que root->data andamos para esquerda
+Node<T>* searchNode(Node<T>* root, T data) {
+    while (root != nullptr && root->data != data) {
+        if (data < root->data) {
+            root = root->ptrLeft;
         } 
-        else 
-        {
-            root = root->ptrRight;//caso contrario vamos para direita
+        
+        else {
+            root = root->ptrRight;
         }
     }
     return root;
+}
+
+template <typename T>
+int depth(Node<T>* root) {
+    if (root == nullptr) return 0;
+
+    if (root->ptrLeft != nullptr && root->ptrRight != nullptr) {
+        if (root->ptrLeft->color =! root->ptrRight->color) {
+            if (root->ptrLeft->color == Color::Red) return depth(root->ptrLeft) + 1;
+            else return depth(root->ptrRight) + 1;
+        }
+    }
+
+    else return std::max(depth(root->ptrLeft), depth(root->ptrRight)) + 1;
 }
 
 // Instâncias explícitas
@@ -529,5 +539,10 @@ template Node<double>* fixDelete(Node<double>*, Node<double>*);
 template Node<int>* searchNode(Node<int>*, int);
 template Node<float>* searchNode(Node<float>*, float);
 template Node<double>* searchNode(Node<double>*, double);
+
+// template int depth(Node<int>*);
+// template int depth(Node<float>*);
+// template int depth(Node<double>*);
+
 } 
 
