@@ -32,6 +32,9 @@ namespace Tree
     Node<T>* rightRotation(Node<T>*, Node<T>*);
 
     template <typename T>
+    void printGivenLevel(Tree::Node<T>*, int, int, int);
+
+    template <typename T>
     void showTree(Node<T>*);
 
     template <typename T>

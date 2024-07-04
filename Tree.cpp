@@ -43,11 +43,18 @@ Node<T>* insertTreeNode(Node<T>* root, T data) {
 
     ptrNewNode->ptrParent = ptrTemp;
 
-    if (ptrTemp == nullptr) {
+    if (ptrTemp == nullptr) 
+    {
         root = ptrNewNode; // Árvore vazia
-    } else if (ptrNewNode->data < ptrTemp->data) {
+    } 
+    
+    else if (ptrNewNode->data < ptrTemp->data) 
+    {
         ptrTemp->ptrLeft = ptrNewNode;
-    } else {
+    } 
+    
+    else 
+    {
         ptrTemp->ptrRight = ptrNewNode;
     }
 
@@ -62,11 +69,13 @@ Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
     while (ptrNewNode != root && ptrNewNode->ptrParent->color == Color::Red) {
         
         // Se o pai do nó é o filho esquerdo do avô
-        if (ptrNewNode->ptrParent == ptrNewNode->ptrParent->ptrParent->ptrLeft) {
+        if (ptrNewNode->ptrParent == ptrNewNode->ptrParent->ptrParent->ptrLeft) 
+        {
             Node<T>* uncle = ptrNewNode->ptrParent->ptrParent->ptrRight; // Tio do nó
 
             // Se o tio do nó é vermelho
-            if (uncle != nullptr && uncle->color == Color::Red) {
+            if (uncle != nullptr && uncle->color == Color::Red) 
+            {
                 ptrNewNode->ptrParent->color = Color::Black;
                 uncle->color = Color::Black;
                 ptrNewNode->ptrParent->ptrParent->color = Color::Red;
@@ -74,7 +83,8 @@ Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
             }
             
             // Se o tio do nó é preto
-            else {
+            else 
+            {
                 // Se o nó é o filho direito do pai
                 if (ptrNewNode == ptrNewNode->ptrParent->ptrRight) {
                     ptrNewNode = ptrNewNode->ptrParent;
@@ -87,11 +97,13 @@ Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
         } 
 
         // Se o pai do nó é o filho direito do avô
-        else {
+        else 
+        {
             Node<T>* uncle = ptrNewNode->ptrParent->ptrParent->ptrLeft; // Tio do nó
 
             // Se o tio do nó é vermelho
-            if (uncle != nullptr && uncle->color == Color::Red) {
+            if (uncle != nullptr && uncle->color == Color::Red) 
+            {
                 ptrNewNode->ptrParent->color = Color::Black;
                 uncle->color = Color::Black;
                 ptrNewNode->ptrParent->ptrParent->color = Color::Red;
@@ -99,9 +111,11 @@ Node<T>* fixInsert(Node<T>* root, Node<T>* ptrNewNode) {
             } 
             
             // Se o tio do nó é preto
-            else {
+            else 
+            {
                 // Se o nó é o filho esquerdo do pai
-                if (ptrNewNode == ptrNewNode->ptrParent->ptrLeft) {
+                if (ptrNewNode == ptrNewNode->ptrParent->ptrLeft) 
+                {
                     ptrNewNode = ptrNewNode->ptrParent;
                     root = rightRotation(root, ptrNewNode);
                 }
@@ -120,17 +134,28 @@ Node<T>* leftRotation(Node<T>* root, Node<T>* ptrCurrent) {
     Node<T>* ptrTemp = ptrCurrent->ptrRight;
     ptrCurrent->ptrRight = ptrTemp->ptrLeft;
 
-    if (ptrTemp->ptrLeft != nullptr) {
+    if (ptrTemp->ptrLeft != nullptr) 
+    {
         ptrTemp->ptrLeft->ptrParent = ptrCurrent;
     }
 
     ptrTemp->ptrParent = ptrCurrent->ptrParent;
 
-    if (ptrCurrent->ptrParent == nullptr) {
+    // Se o nó atual é a raiz
+    if (ptrCurrent->ptrParent == nullptr) 
+    {
         root = ptrTemp;
-    } else if (ptrCurrent == ptrCurrent->ptrParent->ptrLeft) {
+    } 
+
+    // Se o nó atual é o filho esquerdo do pai
+    else if (ptrCurrent == ptrCurrent->ptrParent->ptrLeft) 
+    {
         ptrCurrent->ptrParent->ptrLeft = ptrTemp;
-    } else {
+    }
+
+    // Se o nó atual é o filho direito do pai 
+    else 
+    {
         ptrCurrent->ptrParent->ptrRight = ptrTemp;
     }
 
@@ -145,17 +170,27 @@ Node<T>* rightRotation(Node<T>* root, Node<T>* ptrCurrent) {
     Node<T>* ptrTemp = ptrCurrent->ptrLeft;
     ptrCurrent->ptrLeft = ptrTemp->ptrRight;
 
-    if (ptrTemp->ptrRight != nullptr) {
+    if (ptrTemp->ptrRight != nullptr) 
+    {
         ptrTemp->ptrRight->ptrParent = ptrCurrent;
     }
 
     ptrTemp->ptrParent = ptrCurrent->ptrParent;
 
-    if (ptrCurrent->ptrParent == nullptr) {
+    // Se o nó atual é a raiz
+    if (ptrCurrent->ptrParent == nullptr) 
+    {
         root = ptrTemp;
-    } else if (ptrCurrent == ptrCurrent->ptrParent->ptrRight) {
+    } 
+    // Se o nó atual é o filho direito do pai
+    else if (ptrCurrent == ptrCurrent->ptrParent->ptrRight) 
+    {
         ptrCurrent->ptrParent->ptrRight = ptrTemp;
-    } else {
+    } 
+    
+    // Se o nó atual é o filho esquerdo do pai
+    else 
+    {
         ptrCurrent->ptrParent->ptrLeft = ptrTemp;
     }
 
@@ -166,14 +201,34 @@ Node<T>* rightRotation(Node<T>* root, Node<T>* ptrCurrent) {
 }
 
 template <typename T>
-void showTree(Node<T>* root)
-{
-    if(root == nullptr) return;
+void printGivenLevel(Tree::Node<T>* root, int level, int indentSpace, int spaceBetween) {
+    if (root == nullptr) {
+        for (int i = 0; i < indentSpace; ++i) cout << " ";
+        cout << " ";
+        for (int i = 0; i < spaceBetween; ++i) cout << " ";
+        return;
+    }
+    if (level == 1) {
+        for (int i = 0; i < indentSpace; ++i) cout << " ";
+        cout << root->data << (root->color == Tree::Color::Red ? "\033[1;31mR\033[0m" : "\033[1;30mB\033[0m");
+        for (int i = 0; i < spaceBetween; ++i) cout << " ";
+    } else if (level > 1) {
+        printGivenLevel(root->ptrLeft, level - 1, indentSpace / 2, spaceBetween);
+        printGivenLevel(root->ptrRight, level - 1, indentSpace / 2, spaceBetween);
+    }
+}
 
-     cout << "Valor do nó = " << root -> data << " Sua cor é " << (root-> color == Red ? "\033[1;31mRed\033[0m" : "\033[1;30mBlack\033[0m") << endl;
-
-    showTree(root -> ptrLeft);
-    showTree(root -> ptrRight);
+template <typename T>
+void showTree(Tree::Node<T>* root) {
+    int d = depth(root);
+    int indentSpace = (1 << (d - 1)); // Initial space based on tree depth
+    int spaceBetween = (1 << d) - 1; // Space between nodes at the same level
+    for (int i = 1; i <= d; ++i) {
+        printGivenLevel(root, i, indentSpace, spaceBetween);
+        cout << endl;
+        indentSpace /= 2; // Reduce indent space as we go deeper
+        spaceBetween /= 2;
+    }
 }
 
 template <typename T>
@@ -185,6 +240,8 @@ Node<T>* minNode(Node<T>* root)
     }
 
     Node<T>* current = root;
+
+    // Enquanto houver um nó à esquerda, continue descendo
     while (current -> ptrLeft != nullptr) current = current -> ptrLeft;
 
     return current;
@@ -198,6 +255,8 @@ Node<T>* maxNode(Node<T>* root)
         return root;
     }
     Node<T>* current = root;
+
+    // Enquanto houver um nó à direita, continue descendo
     while (current -> ptrRight != nullptr) current = current -> ptrRight;
 
     return current;
@@ -243,7 +302,7 @@ bool isValidRedBlackTree(Node<T>* root)
     int iAmountBlack = 0;  // Contador de nós pretos no caminho da raiz até a folha mais à esquerda
     int iAmountright = 0;  // Contador de nós pretos no caminho da raiz até a folha mais à direita
     int pathBlackHeight = -1;  // Variável para armazenar a altura negra de um caminho
-    
+
     // Loop para verificar se há nós vermelhos consecutivos e contar os nós pretos
     while (rightCurrent != nullptr && current != nullptr) 
     {
@@ -274,7 +333,7 @@ bool isValidRedBlackTree(Node<T>* root)
 
         current = current->ptrLeft;
     }
-    
+
     // Verificar a altura negra e se todas as folhas (nós nulos) são pretas
     Node<T>* stack[100];  // Pilha para percorrer a árvore
     int top = -1;  // Índice do topo da pilha
@@ -328,130 +387,191 @@ template <typename T>
 Node<T>* removeNode(Node<T>* root, T data) {
     Node<T>* nodeToDelete = searchNode(root, data);
     if (nodeToDelete == nullptr) {
-        return root; // Node not found
+        return root; // Nó não encontrado
     }
 
-    Node<T>* y = nodeToDelete;
-    Node<T>* x;
-    Color originalColor = y->color;
+    Node<T>* ptrTemp = nodeToDelete;
+    Node<T>* ptrSubstitution;
+    Color originalColor = ptrTemp->color;
 
-    if (nodeToDelete->ptrLeft == nullptr) {
-        x = nodeToDelete->ptrRight;
+    // Se o nó a ser removido não tem filho à esquerda
+    if (nodeToDelete->ptrLeft == nullptr) 
+    {
+        ptrSubstitution = nodeToDelete->ptrRight;
         root = transplant(root, nodeToDelete, nodeToDelete->ptrRight);
-    } else if (nodeToDelete->ptrRight == nullptr) {
-        x = nodeToDelete->ptrLeft;
+    } 
+    
+    // Se o nó a ser removido não tem filho à direita
+    else if (nodeToDelete->ptrRight == nullptr) 
+    {
+        ptrSubstitution = nodeToDelete->ptrLeft;
         root = transplant(root, nodeToDelete, nodeToDelete->ptrLeft);
-    } else {
-        y = minNode(nodeToDelete->ptrRight);
-        originalColor = y->color;
-        x = y->ptrRight;
-        if (y->ptrParent == nodeToDelete) {
-            if (x != nullptr) {
-                x->ptrParent = y;
+    } 
+    
+    // Se o nó a ser removido tem dois filhos
+    else 
+    {
+        ptrTemp = minNode(nodeToDelete->ptrRight);
+        originalColor = ptrTemp->color;
+        ptrSubstitution = ptrTemp->ptrRight;
+
+        // Se o nó a ser removido é o pai do nó a ser substituído
+        if (ptrTemp->ptrParent == nodeToDelete) 
+        {
+            if (ptrSubstitution != nullptr) 
+            {
+                ptrSubstitution->ptrParent = ptrTemp;
             }
-        } else {
-            root = transplant(root, y, y->ptrRight);
-            y->ptrRight = nodeToDelete->ptrRight;
-            y->ptrRight->ptrParent = y;
+        } 
+        
+        // Se o nó a ser removido não é o pai do nó a ser substituído
+        else 
+        {
+            root = transplant(root, ptrTemp, ptrTemp->ptrRight);
+            ptrTemp->ptrRight = nodeToDelete->ptrRight;
+            ptrTemp->ptrRight->ptrParent = ptrTemp;
         }
-        root = transplant(root, nodeToDelete, y);
-        y->ptrLeft = nodeToDelete->ptrLeft;
-        y->ptrLeft->ptrParent = y;
-        y->color = nodeToDelete->color;
+
+        root = transplant(root, nodeToDelete, ptrTemp);
+        ptrTemp->ptrLeft = nodeToDelete->ptrLeft;
+        ptrTemp->ptrLeft->ptrParent = ptrTemp;
+        ptrTemp->color = nodeToDelete->color;
     }
-    delete nodeToDelete;
+
+    free(nodeToDelete);
+    
+    // Corrige a árvore vermelha e preta
     if (originalColor == Color::Black) {
-        root = fixDelete(root, x);
+        root = fixDelete(root, ptrSubstitution);
     }
     return root;
 }
 
 template <typename T>
-Node<T>* transplant(Node<T>* root, Node<T>* u, Node<T>* v) {
-    if (u->ptrParent == nullptr) {
-        root = v;
-    } else if (u == u->ptrParent->ptrLeft) {
-        u->ptrParent->ptrLeft = v;
-    } else {
-        u->ptrParent->ptrRight = v;
+Node<T>* transplant(Node<T>* root, Node<T>* nodeToReplace, Node<T>* replacementNode) {
+    // Se o nó a ser substituído é a raiz
+    if (nodeToReplace->ptrParent == nullptr) 
+    {
+        root = replacementNode;
     }
-    if (v != nullptr) {
-        v->ptrParent = u->ptrParent;
+    // Se o nó a ser substituído é o filho esquerdo do pai
+    else if (nodeToReplace == nodeToReplace->ptrParent->ptrLeft) 
+    {
+        nodeToReplace->ptrParent->ptrLeft = replacementNode;
+    } 
+    // Se o nó a ser substituído é o filho direito do pai
+    else 
+    {
+        nodeToReplace->ptrParent->ptrRight = replacementNode;
+    }
+    // Se o nó de substituição não é nulo
+    if (replacementNode != nullptr) {
+        replacementNode->ptrParent = nodeToReplace->ptrParent;
     }
     return root;
 }
 
 template <typename T>
-Node<T>* fixDelete(Node<T>* root, Node<T>* x) {
-    while (x != root && (x == nullptr || x->color == Color::Black)) {
-        if (x == x->ptrParent->ptrLeft) {
-            Node<T>* w = x->ptrParent->ptrRight;
-            if (w->color == Color::Red) {
-                w->color = Color::Black;
-                x->ptrParent->color = Color::Red;
-                root = leftRotation(root, x->ptrParent);
-                w = x->ptrParent->ptrRight;
+Node<T>* fixDelete(Node<T>* root, Node<T>* nodeToDelete) {
+    while (nodeToDelete != root && (nodeToDelete == nullptr || nodeToDelete->color == Color::Black)) 
+    {
+        // Se o nó a ser deletado é o filho esquerdo do pai
+        if (nodeToDelete == nodeToDelete->ptrParent->ptrLeft) 
+        {
+            Node<T>* sibling = nodeToDelete->ptrParent->ptrRight;
+            
+            // Se o irmão do nó a ser deletado é vermelho
+            if (sibling->color == Color::Red) 
+            {
+                sibling->color = Color::Black;
+                nodeToDelete->ptrParent->color = Color::Red;
+                root = leftRotation(root, nodeToDelete->ptrParent);
+                sibling = nodeToDelete->ptrParent->ptrRight;
             }
-            if ((w->ptrLeft == nullptr || w->ptrLeft->color == Color::Black) &&
-                (w->ptrRight == nullptr || w->ptrRight->color == Color::Black)) {
-                w->color = Color::Red;
-                x = x->ptrParent;
-            } else {
-                if (w->ptrRight == nullptr || w->ptrRight->color == Color::Black) {
-                    if (w->ptrLeft != nullptr) {
-                        w->ptrLeft->color = Color::Black;
+
+            // Se os filhos do irmão do nó a ser deletado são pretos
+            if ((sibling->ptrLeft == nullptr || sibling->ptrLeft->color == Color::Black) && (sibling->ptrRight == nullptr || sibling->ptrRight->color == Color::Black)) 
+            {
+                sibling->color = Color::Red;
+                nodeToDelete = nodeToDelete->ptrParent;
+            } 
+            else {
+                // Se o filho esquerdo do irmão do nó a ser deletado é preto
+                if (sibling->ptrRight == nullptr || sibling->ptrRight->color == Color::Black) 
+                {
+                    if (sibling->ptrLeft != nullptr) 
+                    {
+                        sibling->ptrLeft->color = Color::Black;
                     }
-                    w->color = Color::Red;
-                    root = rightRotation(root, w);
-                    w = x->ptrParent->ptrRight;
+                    sibling->color = Color::Red;
+                    root = rightRotation(root, sibling);
+                    sibling = nodeToDelete->ptrParent->ptrRight;
                 }
-                w->color = x->ptrParent->color;
-                x->ptrParent->color = Color::Black;
-                if (w->ptrRight != nullptr) {
-                    w->ptrRight->color = Color::Black;
+                sibling->color = nodeToDelete->ptrParent->color;
+                nodeToDelete->ptrParent->color = Color::Black;
+
+                if (sibling->ptrRight != nullptr) {
+                    sibling->ptrRight->color = Color::Black;
                 }
-                root = leftRotation(root, x->ptrParent);
-                x = root;
+                root = leftRotation(root, nodeToDelete->ptrParent);
+                nodeToDelete = root;
             }
-        } else {
-            Node<T>* w = x->ptrParent->ptrLeft;
-            if (w->color == Color::Red) {
-                w->color = Color::Black;
-                x->ptrParent->color = Color::Red;
-                root = rightRotation(root, x->ptrParent);
-                w = x->ptrParent->ptrLeft;
+        } 
+        
+        else {
+            Node<T>* sibling = nodeToDelete->ptrParent->ptrLeft;
+
+            // Se o irmão do nó a ser deletado é vermelho
+            if (sibling->color == Color::Red) 
+            {
+                sibling->color = Color::Black;
+                nodeToDelete->ptrParent->color = Color::Red;
+                root = rightRotation(root, nodeToDelete->ptrParent);
+                sibling = nodeToDelete->ptrParent->ptrLeft;
             }
-            if ((w->ptrLeft == nullptr || w->ptrLeft->color == Color::Black) &&
-                (w->ptrRight == nullptr || w->ptrRight->color == Color::Black)) {
-                w->color = Color::Red;
-                x = x->ptrParent;
-            } else {
-                if (w->ptrLeft == nullptr || w->ptrLeft->color == Color::Black) {
-                    if (w->ptrRight != nullptr) {
-                        w->ptrRight->color = Color::Black;
+
+            // Se os filhos do irmão do nó a ser deletado são pretos
+            if ((sibling->ptrLeft == nullptr || sibling->ptrLeft->color == Color::Black) && (sibling->ptrRight == nullptr || sibling->ptrRight->color == Color::Black)) 
+            {
+                sibling->color = Color::Red;
+                nodeToDelete = nodeToDelete->ptrParent;
+            } 
+            
+            else {
+                // Se o filho direito do irmão do nó a ser deletado é preto
+                if (sibling->ptrLeft == nullptr || sibling->ptrLeft->color == Color::Black) 
+                {
+                    // Se o filho direito do irmão do nó a ser deletado é preto
+                    if (sibling->ptrRight != nullptr) 
+                    {
+                        sibling->ptrRight->color = Color::Black;
                     }
-                    w->color = Color::Red;
-                    root = leftRotation(root, w);
-                    w = x->ptrParent->ptrLeft;
+                    sibling->color = Color::Red;
+                    root = leftRotation(root, sibling);
+                    sibling = nodeToDelete->ptrParent->ptrLeft;
                 }
-                w->color = x->ptrParent->color;
-                x->ptrParent->color = Color::Black;
-                if (w->ptrLeft != nullptr) {
-                    w->ptrLeft->color = Color::Black;
+                sibling->color = nodeToDelete->ptrParent->color;
+                nodeToDelete->ptrParent->color = Color::Black;
+                
+                // Se o filho esquerdo do irmão do nó a ser deletado não é nulo
+                if (sibling->ptrLeft != nullptr) 
+                {
+                    sibling->ptrLeft->color = Color::Black;
                 }
-                root = rightRotation(root, x->ptrParent);
-                x = root;
+                root = rightRotation(root, nodeToDelete->ptrParent);
+                nodeToDelete = root;
             }
         }
     }
-    if (x != nullptr) {
-        x->color = Color::Black;
+    if (nodeToDelete != nullptr) {
+        nodeToDelete->color = Color::Black;
     }
     return root;
 }
 
 template <typename T>
 Node<T>* searchNode(Node<T>* root, T data) {
+    // Procura o nó com o valor de dados fornecido
     while (root != nullptr && root->data != data) {
         if (data < root->data) {
             root = root->ptrLeft;
@@ -468,14 +588,20 @@ template <typename T>
 int depth(Node<T>* root) {
     if (root == nullptr) return 0;
 
-    if (root->ptrLeft != nullptr && root->ptrRight != nullptr) {
-        if (root->ptrLeft->color =! root->ptrRight->color) {
+    // Se o nó tem dois filhos
+    if (root->ptrLeft != nullptr && root->ptrRight != nullptr) 
+    {
+        // Se os filhos têm cores diferentes
+        if (root->ptrLeft->color != root->ptrRight->color) 
+        {
+            // Se o filho esquerdo é vermelho
             if (root->ptrLeft->color == Color::Red) return depth(root->ptrLeft) + 1;
             else return depth(root->ptrRight) + 1;
         }
     }
 
-    else return std::max(depth(root->ptrLeft), depth(root->ptrRight)) + 1;
+    // Se o nó tem filhos de cores iguais ou tem um filho
+    return std::max(depth(root->ptrLeft), depth(root->ptrRight)) + 1;
 }
 
 // Instâncias explícitas
@@ -536,9 +662,7 @@ template Node<int>* searchNode(Node<int>*, int);
 template Node<float>* searchNode(Node<float>*, float);
 template Node<double>* searchNode(Node<double>*, double);
 
-// template int depth(Node<int>*);
-// template int depth(Node<float>*);
-// template int depth(Node<double>*);
-
-} 
-
+template int depth(Node<int>*);
+template int depth(Node<float>*);
+template int depth(Node<double>*);
+}
